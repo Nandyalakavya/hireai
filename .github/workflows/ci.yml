@@ -27,6 +27,7 @@ jobs:
 
       - name: Build and Start Services with Docker Compose
         run: |
+          touch backend/hireai.db
           docker compose up -d --build
 
       - name: Verify Backend Service

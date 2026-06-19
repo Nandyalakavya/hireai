@@ -1,8 +1,8 @@
-# HireAI — Candidate Ranking & Matching Platform
+# HireAI – AI-Powered Candidate Ranking & Semantic Alignment Platform
 
 🚀 **Live Application:** [https://hireai-frontend-qqvb.onrender.com](https://hireai-frontend-qqvb.onrender.com)
 
-HireAI is a modern SaaS recruitment application (modeled after premier platforms like Ashby, Lever, and Greenhouse) that performs candidate parsing, semantic matching, skill gap evaluations, and behavioral analytics.
+HireAI is an enterprise AI recruitment platform that performs candidate parsing, semantic matching, skill gap evaluations, and behavioral analytics.
 
 ## Technologies Used
 

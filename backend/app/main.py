@@ -31,7 +31,7 @@ os.makedirs(os.path.join(BASE_DIR, "data", "exports"), exist_ok=True)
 # Create Database tables
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="HireAI Candidate Ranking API")
+app = FastAPI(title="HireAI – AI-Powered Candidate Ranking & Semantic Alignment API")
 
 # CORS configuration - must be before routes
 app.add_middleware(
@@ -62,7 +62,7 @@ def startup_event():
 
 @app.get("/")
 def read_root():
-    return {"message": "Welcome to HireAI candidate ranking system backend!"}
+    return {"message": "Welcome to HireAI – AI-Powered Candidate Ranking & Semantic Alignment Platform backend!"}
 
 @app.post("/api/upload/resume")
 def upload_resume(file: UploadFile = File(...), db: Session = Depends(get_db)):

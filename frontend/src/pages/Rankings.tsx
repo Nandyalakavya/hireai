@@ -166,7 +166,7 @@ export const Rankings: React.FC = () => {
   if (loading && jds.length === 0) {
     return (
       <div className="flex-grow flex flex-col min-h-screen">
-        <Header title="Rankings" subtitle="AI-powered candidate ranking" />
+        <Header title="Rankings" subtitle="AI-Powered Candidate Ranking & Semantic Alignment" />
         <div className="flex-grow flex items-center justify-center bg-background">
           <Loader2 className="w-8 h-8 text-primary animate-spin" />
         </div>
@@ -180,7 +180,7 @@ export const Rankings: React.FC = () => {
       <header className="h-16 border-b border-card-border bg-card px-8 flex items-center justify-between z-10 select-none">
         <div>
           <h1 className="text-xl font-bold text-text-main m-0 p-0 leading-none">Rankings</h1>
-          <p className="text-xs text-text-muted mt-1 leading-none">AI-powered candidate ranking</p>
+          <p className="text-xs text-text-muted mt-1 leading-none">AI-Powered Candidate Ranking & Semantic Alignment</p>
         </div>
 
         {/* Export Buttons */}

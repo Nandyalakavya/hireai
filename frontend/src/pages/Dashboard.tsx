@@ -46,20 +46,20 @@ export const Dashboard: React.FC = () => {
     try {
       setLoading(true);
       const jdsRes = await getJobDescriptions();
-      
+
       // Determine which JD rankings and analytics to show on dashboard.
       // Use the last selected JD from session storage if available, otherwise fallback to active JD.
       const storedJdId = sessionStorage.getItem('hireai_selected_jd_id');
       const storedJdExists = storedJdId ? jdsRes.some((jd) => jd.id === Number(storedJdId)) : false;
-      
-      const targetJd = (storedJdId && storedJdExists) 
-        ? jdsRes.find((jd) => jd.id === Number(storedJdId)) 
+
+      const targetJd = (storedJdId && storedJdExists)
+        ? jdsRes.find((jd) => jd.id === Number(storedJdId))
         : (jdsRes.find((jd) => jd.is_active) || jdsRes[0]);
-      
+
       const targetJdId = targetJd?.id ?? undefined;
       const analyticsRes = await getAnalytics(targetJdId);
       setAnalytics(analyticsRes);
-      
+
       if (targetJd) {
         const hasRun = sessionStorage.getItem(`hireai_ranking_run_${targetJd.id}`) === 'true';
         if (hasRun) {
@@ -80,13 +80,13 @@ export const Dashboard: React.FC = () => {
 
   useEffect(() => {
     fetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleResumeUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
-    
+
     setUploading(true);
     setUploadError(null);
     setUploadSuccess(false);
@@ -142,7 +142,7 @@ export const Dashboard: React.FC = () => {
   if (loading && !analytics) {
     return (
       <div className="flex-1 flex flex-col min-h-screen">
-        <Header title="Dashboard" subtitle="AI-powered candidate ranking and matching" />
+        <Header title="Dashboard" subtitle="AI-Powered Candidate Ranking & Semantic Alignment" />
         <div className="flex-1 flex items-center justify-center">
           <Loader2 className="w-8 h-8 text-primary animate-spin" />
         </div>
@@ -163,8 +163,8 @@ export const Dashboard: React.FC = () => {
 
   return (
     <div className="flex-grow flex flex-col min-h-screen">
-      <Header title="Dashboard" subtitle="AI-powered candidate ranking and matching" />
-      
+      <Header title="Dashboard" subtitle="AI-Powered Candidate Ranking & Semantic Alignment" />
+
       <div className="flex-1 p-8 space-y-8 bg-background max-w-7xl w-full mx-auto">
         {/* KPI Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -203,7 +203,7 @@ export const Dashboard: React.FC = () => {
                 <div className="h-64 flex flex-col items-center justify-center text-text-muted text-sm border-2 border-dashed border-card-border rounded-lg">
                   <Award className="w-12 h-12 stroke-1 mb-2" />
                   No candidate rankings compiled.
-                  <button 
+                  <button
                     onClick={() => navigate('/rankings')}
                     className="mt-3 text-xs font-semibold text-primary underline"
                   >
@@ -241,7 +241,7 @@ export const Dashboard: React.FC = () => {
           <div className="bg-card border border-card-border rounded-xl p-6 shadow-sm flex flex-col justify-between">
             <div>
               <h2 className="text-lg font-bold text-text-main mb-6">Quick Actions</h2>
-              
+
               <div className="space-y-4">
                 {/* Upload Job Description */}
                 <button
@@ -310,7 +310,7 @@ export const Dashboard: React.FC = () => {
               <X className="w-5 h-5" />
             </button>
             <h3 className="text-lg font-bold text-text-main mb-4">Upload Candidate Resume</h3>
-            
+
             {uploadSuccess ? (
               <div className="flex flex-col items-center justify-center py-8 text-center">
                 <CheckCircle2 className="w-12 h-12 text-success mb-2" />
@@ -367,7 +367,7 @@ export const Dashboard: React.FC = () => {
               <X className="w-5 h-5" />
             </button>
             <h3 className="text-lg font-bold text-text-main mb-4">Add Job Description</h3>
-            
+
             <form onSubmit={handleJdSubmit} className="space-y-4">
               <div>
                 <label className="block text-xs font-bold text-text-main uppercase mb-1">

@@ -1,12 +1,8 @@
 server {
-    listen 80;
+    listen ${PORT};
 
-    # Reverse proxy API requests to the backend service.
-    # When using docker-compose or Render, override BACKEND_URL at runtime
-    # via the nginx.conf.template (recommended). This static config is a
-    # fallback for simple local setups.
     location /api {
-        proxy_pass http://localhost:8000;
+        proxy_pass ${BACKEND_URL};
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;

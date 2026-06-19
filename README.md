@@ -51,20 +51,20 @@ HireAI is an enterprise AI recruitment platform that performs candidate parsing,
    ```
 4. Start the development server on port 8000:
    ```bash
-   uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
+   uvicorn app.main:app --reload
    ```
    *Note: Database schemas are initialized and pre-seeded on startup.*
 
 ### Start the Vite React Frontend
 1. Open a terminal in the `./frontend` directory.
 2. Install node dependencies:
-   ```powershell
+   ```bash
    # If running PowerShell with script restrictions, use npm.cmd:
-   npm.cmd install
+   npm.install
    ```
 3. Start the Vite development hot-reload server:
-   ```powershell
-   npm.cmd run dev
+   ```bash
+   npm.run dev
    ```
 4. Access the web app in your browser at: `http://localhost:5173`.
 

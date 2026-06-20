@@ -3,6 +3,10 @@ import json
 import logging
 from typing import List
 
+# Set Hugging Face cache directory to a persistent folder within data/ to prevent re-downloading on startup/restart
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+os.environ["HF_HOME"] = os.path.join(BASE_DIR, "data", "hf_cache")
+
 logger = logging.getLogger(__name__)
 
 # Try to use sentence-transformers. If not installed/failed, we use a scikit-learn based fallback.

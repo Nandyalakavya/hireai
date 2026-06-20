@@ -1,6 +1,26 @@
 # HireAI – AI-Powered Candidate Ranking & Semantic Alignment Platform
 
 🚀 **Live Application:** [https://hireai-frontend-qqvb.onrender.com](https://hireai-frontend-qqvb.onrender.com)
+(The network should be stable and if and data doesnot occur colse it and reopen it.)
+example JD
+(Software Developer — Full Stack Engineer
+Technology / Software Development • 1-4 years experience
+Preferred Skills: Node, MongoDB, Docker, AWS, TypeScript, CI/CD Required Skills
+Python, React.js, JavaScript, REST API, SQL, Git.
+Responsibilities
+Design and develop scalable web applications
+Build responsive frontend interfaces using React.js
+Develop and maintain RESTful APIs
+Integrate databases and third-party services
+Write clean, maintainable, and testable code
+Debug and optimize application performance
+Collaborate with cross-functional teams
+Participate in code reviews and Agile development processes
+Raw Description Text
+We are looking for a Software Developer with expertise in full-stack web development and modern software engineering practices. Responsibilities include developing scalable frontend and backend applications, building REST APIs, integrating databases, and optimizing application performance. Candidates should have strong Python and React.js skills, experience with SQL databases, Git version control, and a solid understanding of software development principles. Preferred qualifications include experience with Docker, AWS, and modern deployment workflows. Requirements: 1–4 years of experience in software development and strong problem-solving abilities.)
+
+"Resume should be saved as name_resume"
+
 
 HireAI is an enterprise AI recruitment platform that performs candidate parsing, semantic matching, skill gap evaluations, and behavioral analytics.
 

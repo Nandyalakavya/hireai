@@ -47,14 +47,16 @@ class EmbeddingEngine:
         # Fallback pseudo-embedding: construct a deterministic vector from text
         # Let's generate a vector of size 384 (same as MiniLM-L6-v2) based on hash values or simple bag-of-words
         import numpy as np
+        import hashlib
         vector = np.zeros(384)
         words = text.lower().split()
         if not words:
             return vector.tolist()
         
-        for i, word in enumerate(words):
-            # simple hash to map word to index [0, 383]
-            idx = hash(word) % 384
+        for word in words:
+            # Deterministic MD5 hash to map word to index [0, 383]
+            h = hashlib.md5(word.encode('utf-8')).digest()
+            idx = int.from_bytes(h, 'big') % 384
             vector[idx] += 1.0
             
         norm = np.linalg.norm(vector)

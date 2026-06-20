@@ -21,9 +21,9 @@ lerna-debug.log*
 **/.pytest_cache/
 **/.mypy_cache/
 
-# Databases
+# Databases and runtime data
 backend/hireai.db
-backend/data/*.db
+backend/data/
 *.db
 
 # Local env files

@@ -27,6 +27,7 @@ class Candidate(Base):
     interview_success = Column(Float, default=0.0)
     
     resume_path = Column(String, nullable=True)
+    profile_embedding = Column(Text, nullable=True) # JSON array of 384 floats
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
     rankings = relationship("Ranking", back_populates="candidate", cascade="all, delete-orphan")

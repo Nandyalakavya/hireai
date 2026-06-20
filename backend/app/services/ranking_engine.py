@@ -42,8 +42,18 @@ class RankingEngine:
 
         for candidate in candidates:
             # 1. Semantic score
-            cand_text = embedding_engine.get_candidate_profile_text(candidate)
-            cand_embedding = embedding_engine.get_embedding(cand_text)
+            if candidate.profile_embedding:
+                try:
+                    cand_embedding = json.loads(candidate.profile_embedding)
+                except Exception:
+                    cand_text = embedding_engine.get_candidate_profile_text(candidate)
+                    cand_embedding = embedding_engine.get_embedding(cand_text)
+                    candidate.profile_embedding = json.dumps(cand_embedding)
+            else:
+                cand_text = embedding_engine.get_candidate_profile_text(candidate)
+                cand_embedding = embedding_engine.get_embedding(cand_text)
+                candidate.profile_embedding = json.dumps(cand_embedding)
+
             similarity = embedding_engine.calculate_similarity(jd_embedding, cand_embedding)
             semantic_score = round(max(0.0, min(100.0, similarity * 100.0)), 1)
 

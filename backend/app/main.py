@@ -105,7 +105,8 @@ def upload_resume(file: UploadFile = File(...), db: Session = Depends(get_db)):
             recent_activity=parsed_profile["recent_activity"],
             response_rate=parsed_profile["response_rate"],
             recruiter_interest=parsed_profile["recruiter_interest"],
-            interview_success=parsed_profile["interview_success"]
+            interview_success=parsed_profile["interview_success"],
+            resume_path=file_path
         )
         db.add(candidate)
         upload_record.status = "success"
@@ -161,6 +162,15 @@ def upload_jd(
         db.add(jd)
         db.commit()
         db.refresh(jd)
+
+        # Write JD text to data folder
+        jd_filename = f"{jd.id}_jd.txt"
+        jd_file_path = os.path.join(BASE_DIR, "data", "job_descriptions", jd_filename)
+        with open(jd_file_path, "w", encoding="utf-8") as f:
+            f.write(raw_text)
+
+        jd.file_path = jd_file_path
+        db.commit()
 
         RankingEngine.run_ranking_for_jd(db, jd.id)
 
@@ -300,6 +310,11 @@ def delete_candidate(id: str, db: Session = Depends(get_db)):
     c = db.query(Candidate).filter(Candidate.id == id).first()
     if not c:
         raise HTTPException(status_code=404, detail="Candidate not found")
+    if c.resume_path and os.path.exists(c.resume_path):
+        try:
+            os.remove(c.resume_path)
+        except Exception as e:
+            logger.error(f"Failed to delete resume file {c.resume_path}: {e}")
     db.delete(c)
     db.commit()
     return {"message": "Candidate deleted successfully"}
@@ -342,6 +357,11 @@ def delete_jd(id: int, db: Session = Depends(get_db)):
     jd = db.query(JobDescription).filter(JobDescription.id == id).first()
     if not jd:
         raise HTTPException(status_code=404, detail="Job description not found")
+    if jd.file_path and os.path.exists(jd.file_path):
+        try:
+            os.remove(jd.file_path)
+        except Exception as e:
+            logger.error(f"Failed to delete JD file {jd.file_path}: {e}")
     db.delete(jd)
     db.commit()
     return {"message": "Job description deleted successfully"}
@@ -369,6 +389,17 @@ def update_jd(
         jd.keywords = json.dumps(parsed_jd["keywords"])
         jd.responsibilities = json.dumps(parsed_jd["responsibilities"])
         jd.raw_text = raw_text
+
+        # Update JD file in data folder
+        if jd.file_path:
+            jd_file_path = jd.file_path
+        else:
+            jd_filename = f"{jd.id}_jd.txt"
+            jd_file_path = os.path.join(BASE_DIR, "data", "job_descriptions", jd_filename)
+            jd.file_path = jd_file_path
+
+        with open(jd_file_path, "w", encoding="utf-8") as f:
+            f.write(raw_text)
 
         db.commit()
         db.refresh(jd)

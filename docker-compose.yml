@@ -9,7 +9,6 @@ services:
       - "8000:8000"
     volumes:
       - ./backend/data:/app/data
-      - ./backend/hireai.db:/app/hireai.db
     environment:
       - PORT=8000
 

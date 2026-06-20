@@ -26,6 +26,7 @@ class Candidate(Base):
     recruiter_interest = Column(Float, default=0.0)
     interview_success = Column(Float, default=0.0)
     
+    resume_path = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
     rankings = relationship("Ranking", back_populates="candidate", cascade="all, delete-orphan")
@@ -45,6 +46,7 @@ class JobDescription(Base):
     responsibilities = Column(Text, nullable=True) # JSON array
     raw_text = Column(Text, nullable=True)
     is_active = Column(Boolean, default=False)
+    file_path = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
     rankings = relationship("Ranking", back_populates="job_description", cascade="all, delete-orphan")

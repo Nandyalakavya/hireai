@@ -19,15 +19,18 @@ except Exception as e:
 
 class EmbeddingEngine:
     def __init__(self):
-        self.model = None
-        if HAS_SENTENCE_TRANSFORMERS:
+        self._model = None  # Lazy-loaded on first use to avoid startup OOM
+
+    @property
+    def model(self):
+        """Load model on first access (lazy loading) to avoid OOM at startup."""
+        if self._model is None and HAS_SENTENCE_TRANSFORMERS:
             try:
-                # Load model locally
-                self.model = SentenceTransformer("all-MiniLM-L6-v2")
+                self._model = SentenceTransformer("all-MiniLM-L6-v2")
                 logger.info("SentenceTransformer model 'all-MiniLM-L6-v2' loaded successfully.")
             except Exception as e:
-                logger.error(f"Failed to load SentenceTransformer model: {e}. Using fallback embedding engine.")
-                self.model = None
+                logger.error(f"Failed to load SentenceTransformer model: {e}. Using fallback.")
+        return self._model
 
     def get_embedding(self, text: str) -> List[float]:
         """

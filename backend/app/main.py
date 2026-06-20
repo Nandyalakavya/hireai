@@ -3,7 +3,7 @@ import json
 import shutil
 import logging
 from typing import List, Optional
-from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Form, Query
+from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Form, Query, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
@@ -138,6 +138,7 @@ def upload_resume(file: UploadFile = File(...), db: Session = Depends(get_db)):
 
 @app.post("/api/upload/jd")
 def upload_jd(
+    background_tasks: BackgroundTasks,
     title: str = Form(...),
     raw_text: str = Form(...),
     db: Session = Depends(get_db)
@@ -172,7 +173,8 @@ def upload_jd(
         jd.file_path = jd_file_path
         db.commit()
 
-        RankingEngine.run_ranking_for_jd(db, jd.id)
+        # Run ranking in background so this endpoint responds immediately
+        background_tasks.add_task(RankingEngine.run_ranking_for_jd, db, jd.id)
 
         return {
             "id": jd.id,
@@ -310,11 +312,6 @@ def delete_candidate(id: str, db: Session = Depends(get_db)):
     c = db.query(Candidate).filter(Candidate.id == id).first()
     if not c:
         raise HTTPException(status_code=404, detail="Candidate not found")
-    if c.resume_path and os.path.exists(c.resume_path):
-        try:
-            os.remove(c.resume_path)
-        except Exception as e:
-            logger.error(f"Failed to delete resume file {c.resume_path}: {e}")
     db.delete(c)
     db.commit()
     return {"message": "Candidate deleted successfully"}
@@ -357,11 +354,6 @@ def delete_jd(id: int, db: Session = Depends(get_db)):
     jd = db.query(JobDescription).filter(JobDescription.id == id).first()
     if not jd:
         raise HTTPException(status_code=404, detail="Job description not found")
-    if jd.file_path and os.path.exists(jd.file_path):
-        try:
-            os.remove(jd.file_path)
-        except Exception as e:
-            logger.error(f"Failed to delete JD file {jd.file_path}: {e}")
     db.delete(jd)
     db.commit()
     return {"message": "Job description deleted successfully"}
@@ -422,12 +414,12 @@ def update_jd(
         raise HTTPException(status_code=500, detail=f"Job description update failed: {e}")
 
 @app.post("/api/rank")
-def run_ranking(payload: dict, db: Session = Depends(get_db)):
+def run_ranking(payload: dict, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
     jd_id = payload.get("jd_id")
     if not jd_id:
         raise HTTPException(status_code=400, detail="jd_id is required")
     try:
-        RankingEngine.run_ranking_for_jd(db, jd_id)
+        background_tasks.add_task(RankingEngine.run_ranking_for_jd, db, jd_id)
         return {"message": "Rankings compiled successfully."}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Ranking failed: {e}")
